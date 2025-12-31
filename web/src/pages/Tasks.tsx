@@ -189,6 +189,7 @@ export default function Tasks() {
               <h2 className="text-4xl font-display text-gradient">Create New Task</h2>
               <button
                 onClick={() => setShowCreateForm(false)}
+                aria-label="Close"
                 className="text-white/40 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl"
               >
                 <X size={28} />
