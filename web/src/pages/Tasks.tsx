@@ -190,6 +190,7 @@ export default function Tasks() {
               <button
                 onClick={() => setShowCreateForm(false)}
                 className="text-white/40 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl"
+                aria-label="Close"
               >
                 <X size={28} />
               </button>
