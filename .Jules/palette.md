@@ -1,0 +1,3 @@
+## 2024-07-30 - Loading State on Redirect
+**Learning:** When a user action triggers a synchronous, full-page redirect (like an OAuth login), the browser may navigate away before React has a chance to re-render the UI with a loading state. This makes the loading spinner appear to be broken, as it's never visible to the user.
+**Action:** To fix this, wrap the redirect call (e.g., `window.location.href = ...`) in a short `setTimeout` (e.g., `100ms`). This small delay gives React enough time to update the DOM and show the loading state, providing crucial feedback to the user before the page changes.
