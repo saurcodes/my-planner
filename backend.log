@@ -1,0 +1,29 @@
+
+> time-management-app@1.0.0 dev:backend /app
+> pnpm --filter backend dev
+
+
+> @time-management/backend@1.0.0 dev /app/backend
+> tsx watch src/server.ts
+
+node:internal/modules/cjs/loader:502
+      const err = new Error(
+                  ^
+
+Error: Cannot find module '/app/backend/node_modules/@time-management/shared/dist/index.js'. Please verify that the package.json has a valid "main" entry
+    at tryPackage (node:internal/modules/cjs/loader:502:19)
+    at Function._findPath (node:internal/modules/cjs/loader:764:18)
+    at node:internal/modules/cjs/loader:1369:27
+    at nextResolveSimple (/app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-D46fvsV_.cjs:4:1004)
+    at /app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-D46fvsV_.cjs:3:2630
+    at /app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1542
+    at resolveTsPaths (/app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-D46fvsV_.cjs:4:760)
+    at /app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-D46fvsV_.cjs:4:1102
+    at m._resolveFilename (file:///app/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/register-B7jrtLTO.mjs:1:789)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19) {
+  code: 'MODULE_NOT_FOUND',
+  path: '/app/backend/node_modules/@time-management/shared/package.json',
+  requestPath: '@time-management/shared'
+}
+
+Node.js v22.21.1

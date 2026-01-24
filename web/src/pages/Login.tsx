@@ -16,7 +16,7 @@ export default function Login() {
 
   const handleGoogleLogin = () => {
     setLoading(true);
-    // Use a timeout to allow the loading state to render before redirecting
+    // Use setTimeout to allow the UI to update before redirecting
     setTimeout(() => {
       window.location.href = '/api/auth/google';
     }, 0);
@@ -41,14 +41,13 @@ export default function Login() {
           <div className="space-y-4">
             <button
               onClick={handleGoogleLogin}
-              className="w-full btn btn-primary flex items-center justify-center gap-3 py-3"
-              disabled={loading}
-              aria-live="polite"
+              className="w-full btn btn-primary flex items-center justify-center gap-3 py-3 transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500"
+              aria-label="Continue with Google"
             >
               {loading ? (
                 <>
                   <Spinner />
-                  Redirecting...
+                  Continuing...
                 </>
               ) : (
                 <>
