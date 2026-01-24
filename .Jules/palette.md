@@ -1,5 +1,5 @@
-## 2024-07-25 - Importance of Immediate Feedback
+## 2024-07-22 - Handling Loading States for Synchronous Redirects
 
-**Learning:** When a user action triggers a navigation or a process that isn't instantaneous (like an API call or page redirect), the interface must provide immediate feedback. Without it, users may assume the action failed and click again, leading to frustration or unintended consequences.
+**Learning:** When a user action, like an OAuth login, triggers a synchronous, full-page redirect (`window.location.href`), the browser navigates away immediately. This prevents React's state updates from re-rendering the component, meaning UI feedback like spinners or disabled states won't be displayed.
 
-**Action:** For any action that doesn't produce an immediate result, implement a loading state. This can be a disabled button, a spinner, or a toast message. For the login button, I added a loading state that disables the button and shows a "Redirecting..." message to prevent multiple clicks during the redirect.
+**Action:** To ensure the UI has a chance to update, wrap the navigation call in a `setTimeout` with a zero-millisecond delay (`setTimeout(..., 0)`). This pushes the navigation to the end of the event loop, giving React just enough time to re-render the component with the loading state before the page redirects.
