@@ -41,7 +41,8 @@ export default function Login() {
           <div className="space-y-4">
             <button
               onClick={handleGoogleLogin}
-              className="w-full btn btn-primary flex items-center justify-center gap-3 py-3 transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500"
+              disabled={loading}
+              className="w-full btn btn-primary flex items-center justify-center gap-3 py-3 transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-75 disabled:cursor-not-allowed"
               aria-label="Continue with Google"
             >
               {loading ? (
