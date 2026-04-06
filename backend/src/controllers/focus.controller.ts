@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -9,7 +9,7 @@ import { focusService } from '../services/focus.service';
 import { AppError } from '../middleware/error.middleware';
 
 class FocusController {
-  async getFocusSessions(req: AuthRequest, res: Response) {
+  async getFocusSessions(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const sessions = await focusService.getFocusSessions(userId);
@@ -20,11 +20,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getActiveSession(req: AuthRequest, res: Response) {
+  async getActiveSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const session = await focusService.getActiveSession(userId);
@@ -35,11 +35,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async startSession(req: AuthRequest, res: Response) {
+  async startSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { taskId } = req.body;
@@ -53,11 +53,11 @@ class FocusController {
       };
       res.status(201).json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async endSession(req: AuthRequest, res: Response) {
+  async endSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -75,11 +75,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async pauseSession(req: AuthRequest, res: Response) {
+  async pauseSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -96,11 +96,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async resumeSession(req: AuthRequest, res: Response) {
+  async resumeSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -117,11 +117,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getBlockedSites(req: AuthRequest, res: Response) {
+  async getBlockedSites(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const sites = await focusService.getBlockedSites(userId);
@@ -132,11 +132,11 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async updateBlockedSites(req: AuthRequest, res: Response) {
+  async updateBlockedSites(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { websites } = req.body;
@@ -149,7 +149,7 @@ class FocusController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

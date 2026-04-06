@@ -3,6 +3,7 @@ import { useTaskStore } from '@/store/taskStore';
 import { Task } from '@time-management/shared';
 import { Plus, AlertCircle, Clock, Calendar as CalendarIcon, Zap, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { matrix, loading, fetchMatrix } = useTaskStore();
@@ -21,7 +22,8 @@ export default function Dashboard() {
       subtitle: 'Do First',
       className: 'quadrant-urgent-important',
       icon: AlertCircle,
-      iconColor: 'text-sunset-pink',
+      iconBg: 'bg-terra-50',
+      iconColor: 'text-terra-500',
       tasks: matrix?.urgentImportant || [],
     },
     {
@@ -30,7 +32,8 @@ export default function Dashboard() {
       subtitle: 'Schedule',
       className: 'quadrant-not-urgent-important',
       icon: CalendarIcon,
-      iconColor: 'text-primary-400',
+      iconBg: 'bg-sky/10',
+      iconColor: 'text-sky',
       tasks: matrix?.notUrgentImportant || [],
     },
     {
@@ -39,7 +42,8 @@ export default function Dashboard() {
       subtitle: 'Delegate',
       className: 'quadrant-urgent-not-important',
       icon: Zap,
-      iconColor: 'text-sunset-orange',
+      iconBg: 'bg-cream-300/50',
+      iconColor: 'text-terra-400',
       tasks: matrix?.urgentNotImportant || [],
     },
     {
@@ -48,7 +52,8 @@ export default function Dashboard() {
       subtitle: 'Eliminate',
       className: 'quadrant-not-urgent-not-important',
       icon: TrendingUp,
-      iconColor: 'text-white/40',
+      iconBg: 'bg-sage/10',
+      iconColor: 'text-sage',
       tasks: matrix?.notUrgentNotImportant || [],
     },
   ];
@@ -56,7 +61,10 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <div className="text-xl text-white/50 font-display animate-pulse">Loading your priorities...</div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-terra-200 border-t-terra-500 rounded-full animate-spin" />
+          <p className="text-warm-400 text-sm font-medium">Loading your priorities...</p>
+        </div>
       </div>
     );
   }
@@ -65,62 +73,62 @@ export default function Dashboard() {
     <div>
       {/* Header */}
       <div className="mb-10 animate-fade-in-up">
-        <h1 className="text-6xl font-display text-gradient mb-3">
+        <h1 className="text-4xl md:text-5xl font-display text-warm-900 mb-2">
           Eisenhower Matrix
         </h1>
-        <p className="text-white/60 text-lg">Master time by understanding urgency and importance</p>
+        <p className="text-warm-500">Master time by understanding urgency and importance</p>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="card animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          <div className="flex items-start justify-between mb-4">
-            <div className="p-4 bg-gradient-to-br from-sunset-pink/20 to-sunset-orange/10 rounded-2xl border border-sunset-pink/30">
-              <AlertCircle className="text-sunset-pink" size={28} strokeWidth={2} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <div className="flex items-start justify-between">
+            <div className="p-3 bg-terra-50 rounded-2xl">
+              <AlertCircle className="text-terra-500" size={22} strokeWidth={2} />
             </div>
             <div className="text-right">
-              <div className="text-5xl font-display text-gradient-sunset mb-1">
+              <div className="text-3xl font-display text-warm-900">
                 {matrix?.urgentImportant.length || 0}
               </div>
-              <div className="text-xs text-white/50 font-semibold tracking-wider uppercase">Critical</div>
+              <div className="text-xs text-warm-400 font-medium tracking-wider uppercase mt-1">Critical</div>
             </div>
           </div>
-          <div className="text-sm text-white/70 font-medium">Urgent & Important</div>
+          <div className="text-sm text-warm-600 font-medium mt-4">Urgent & Important</div>
         </div>
 
-        <div className="card animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-start justify-between mb-4">
-            <div className="p-4 bg-gradient-to-br from-sunset-orange/20 to-sunset-gold/10 rounded-2xl border border-sunset-orange/30">
-              <Clock className="text-sunset-orange" size={28} strokeWidth={2} />
+        <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+          <div className="flex items-start justify-between">
+            <div className="p-3 bg-cream-200 rounded-2xl">
+              <Clock className="text-terra-400" size={22} strokeWidth={2} />
             </div>
             <div className="text-right">
-              <div className="text-5xl font-display text-white mb-1">
+              <div className="text-3xl font-display text-warm-900">
                 {(matrix?.urgentImportant.length || 0) + (matrix?.urgentNotImportant.length || 0)}
               </div>
-              <div className="text-xs text-white/50 font-semibold tracking-wider uppercase">Urgent</div>
+              <div className="text-xs text-warm-400 font-medium tracking-wider uppercase mt-1">Urgent</div>
             </div>
           </div>
-          <div className="text-sm text-white/70 font-medium">Total Urgent Tasks</div>
+          <div className="text-sm text-warm-600 font-medium mt-4">Total Urgent Tasks</div>
         </div>
 
-        <div className="card animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          <div className="flex items-start justify-between mb-4">
-            <div className="p-4 bg-gradient-to-br from-acid-lime/20 to-electric-cyan/10 rounded-2xl border border-acid-lime/30">
-              <CalendarIcon className="text-acid-lime" size={28} strokeWidth={2} />
+        <div className="card p-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-start justify-between">
+            <div className="p-3 bg-sage/10 rounded-2xl">
+              <CalendarIcon className="text-sage" size={22} strokeWidth={2} />
             </div>
             <div className="text-right">
-              <div className="text-5xl font-display text-gradient mb-1">
-                {Object.values(matrix || {}).reduce((sum, tasks) => sum + tasks.length, 0)}
+              <div className="text-3xl font-display text-warm-900">
+                {(matrix?.urgentImportant.length || 0) + (matrix?.notUrgentImportant.length || 0) + (matrix?.urgentNotImportant.length || 0) + (matrix?.notUrgentNotImportant.length || 0)}
               </div>
-              <div className="text-xs text-white/50 font-semibold tracking-wider uppercase">Total</div>
+              <div className="text-xs text-warm-400 font-medium tracking-wider uppercase mt-1">Total</div>
             </div>
           </div>
-          <div className="text-sm text-white/70 font-medium">All Active Tasks</div>
+          <div className="text-sm text-warm-600 font-medium mt-4">All Active Tasks</div>
         </div>
       </div>
 
       {/* Matrix Grid */}
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {quadrants.map((quadrant, index) => (
           <QuadrantCard key={quadrant.key} quadrant={quadrant} index={index} />
         ))}
@@ -134,50 +142,50 @@ function QuadrantCard({ quadrant, index }: { quadrant: any; index: number }) {
 
   return (
     <div
-      className={`${quadrant.className} rounded-3xl overflow-hidden backdrop-blur-sm animate-fade-in-up relative`}
-      style={{ animationDelay: `${0.4 + index * 0.1}s` }}
+      className={`${quadrant.className} rounded-3xl overflow-hidden animate-fade-in-up`}
+      style={{ animationDelay: `${0.25 + index * 0.08}s` }}
     >
-      {/* Decorative corner gradient */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/10 to-transparent rounded-bl-full blur-2xl" />
-
-      <div className="p-6 border-b border-white/10 relative z-10">
-        <div className="flex items-start justify-between mb-2">
+      <div className="p-6 border-b border-warm-100/50">
+        <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className={`p-3 rounded-2xl ${quadrant.iconColor} bg-white/5 backdrop-blur-sm`}>
-              <Icon size={24} strokeWidth={2.5} />
+            <div className={`p-2.5 rounded-xl ${quadrant.iconBg}`}>
+              <Icon size={20} strokeWidth={2} className={quadrant.iconColor} />
             </div>
             <div>
-              <h3 className="font-display text-2xl text-white mb-1">{quadrant.title}</h3>
-              <p className="text-sm text-white/50 font-semibold tracking-wider uppercase">{quadrant.subtitle}</p>
+              <h3 className="font-display text-lg text-warm-900">{quadrant.title}</h3>
+              <p className="text-xs text-warm-400 font-medium tracking-wider uppercase">{quadrant.subtitle}</p>
             </div>
           </div>
-          <div className="text-4xl font-display text-white/20">{quadrant.tasks.length}</div>
+          <div className="text-2xl font-display text-warm-300">{quadrant.tasks.length}</div>
         </div>
       </div>
 
-      <div className="p-6 space-y-3 min-h-[350px] max-h-[450px] overflow-y-auto custom-scrollbar">
+      <div className="p-5 space-y-3 min-h-[280px] max-h-[400px] overflow-y-auto custom-scrollbar">
         {quadrant.tasks.length === 0 ? (
-          <div className="text-center text-white/30 py-12">
-            <Icon size={48} strokeWidth={1.5} className="mx-auto mb-3 opacity-30" />
-            <p className="text-sm font-medium">No tasks in this quadrant</p>
-            <p className="text-xs mt-1 opacity-70">Add a task to get started</p>
+          <div className="text-center text-warm-300 py-12">
+            <Icon size={36} strokeWidth={1.5} className="mx-auto mb-3 opacity-40" />
+            <p className="text-sm font-medium">No tasks here</p>
+            <p className="text-xs mt-1 opacity-60">Add a task to get started</p>
           </div>
         ) : (
           quadrant.tasks.map((task: Task, taskIndex: number) => (
             <div
               key={task.id}
               className="animate-fade-in-up"
-              style={{ animationDelay: `${0.05 * taskIndex}s` }}
+              style={{ animationDelay: `${0.03 * taskIndex}s` }}
             >
               <TaskCard task={task} />
             </div>
           ))
         )}
 
-        <button className="w-full p-4 border-2 border-dashed border-white/20 rounded-2xl hover:border-white/40 hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 text-white/50 hover:text-white/80 group">
-          <Plus size={18} className="group-hover:rotate-90 transition-transform duration-300" />
-          <span className="text-sm font-semibold">Add Task</span>
-        </button>
+        <Link
+          to="/tasks"
+          className="w-full p-3.5 border border-dashed border-warm-200 rounded-2xl hover:border-terra-300 hover:bg-terra-50/30 transition-all duration-300 flex items-center justify-center gap-2 text-warm-400 hover:text-terra-500 group"
+        >
+          <Plus size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+          <span className="text-sm font-medium">Add Task</span>
+        </Link>
       </div>
     </div>
   );
@@ -187,41 +195,41 @@ function TaskCard({ task }: { task: Task }) {
   return (
     <div className="task-card group cursor-pointer">
       <div className="flex items-start justify-between mb-2">
-        <h4 className="font-semibold text-white text-base flex-1 pr-2 group-hover:text-acid-lime transition-colors">
+        <h4 className="font-semibold text-warm-800 text-sm flex-1 pr-2 group-hover:text-terra-600 transition-colors">
           {task.title}
         </h4>
         {task.estimatedMinutes && (
-          <div className="flex items-center gap-1 text-white/40 text-xs bg-white/5 px-2 py-1 rounded-lg">
-            <Clock size={12} />
+          <div className="flex items-center gap-1 text-warm-400 text-xs bg-cream-200/60 px-2 py-0.5 rounded-lg">
+            <Clock size={11} />
             <span>{task.estimatedMinutes}m</span>
           </div>
         )}
       </div>
 
       {task.description && (
-        <p className="text-sm text-white/60 mb-3 line-clamp-2">{task.description}</p>
+        <p className="text-xs text-warm-500 mb-3 line-clamp-2">{task.description}</p>
       )}
 
       <div className="flex items-center justify-between">
         {task.deadline && (
-          <span className="flex items-center gap-1 text-xs text-white/40">
-            <CalendarIcon size={12} />
+          <span className="flex items-center gap-1 text-xs text-warm-400">
+            <CalendarIcon size={11} />
             {new Date(task.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         )}
 
-        {task.tags.length > 0 && (
+        {task.tags?.length > 0 && (
           <div className="flex gap-1 flex-wrap">
             {task.tags.slice(0, 2).map((tag: string) => (
               <span
                 key={tag}
-                className="px-2 py-0.5 bg-white/10 rounded-lg text-xs text-white/70 font-medium"
+                className="px-2 py-0.5 bg-cream-200/80 rounded-lg text-xs text-warm-600 font-medium"
               >
                 {tag}
               </span>
             ))}
             {task.tags.length > 2 && (
-              <span className="px-2 py-0.5 bg-white/10 rounded-lg text-xs text-white/50">
+              <span className="px-2 py-0.5 bg-cream-200/60 rounded-lg text-xs text-warm-400">
                 +{task.tags.length - 2}
               </span>
             )}

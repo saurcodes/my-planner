@@ -60,3 +60,9 @@ export const notFoundHandler = (req: Request, res: Response) => {
   };
   res.status(404).json(response);
 };
+
+export const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    fn(req, res, next).catch(next);
+  };
+};

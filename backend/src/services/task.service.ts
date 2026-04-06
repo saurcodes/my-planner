@@ -77,6 +77,10 @@ class TaskService {
     const importance = data.importance || 5;
     const quadrant = calculateQuadrant(urgency, importance);
 
+    // Calculate priority before insert to avoid extra UPDATE
+    const tempTask = { quadrant, deadline: data.deadline } as Task;
+    const priority = calculatePriority(tempTask);
+
     const row = await db.query<any>(
       `INSERT INTO tasks (
         user_id, title, description, urgency, importance, quadrant, priority,
@@ -90,7 +94,7 @@ class TaskService {
         urgency,
         importance,
         quadrant,
-        TaskPriority.MEDIUM, // Will be updated after mapping
+        priority,
         data.estimatedMinutes || null,
         data.deadline || null,
         data.scheduledFor || null,
@@ -98,14 +102,7 @@ class TaskService {
       ]
     );
 
-    const task = this.mapRowToTask(row[0]);
-
-    // Update priority based on task data
-    const priority = calculatePriority(task);
-    await db.query('UPDATE tasks SET priority = $1 WHERE id = $2', [priority, task.id]);
-    task.priority = priority;
-
-    return task;
+    return this.mapRowToTask(row[0]);
   }
 
   async createTaskFromVoice(userId: string, input: VoiceTaskInput): Promise<any> {

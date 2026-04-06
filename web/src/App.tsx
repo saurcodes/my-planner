@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
+import Spinner from './components/Spinner';
 
 // Pages
 import Login from './pages/Login';
@@ -32,8 +33,8 @@ function App() {
             <Route path="analytics" element={<Analytics />} />
           </Route>
         </Routes>
+        <Toaster position="top-right" />
       </Router>
-      <Toaster position="top-right" />
     </>
   );
 }
@@ -41,6 +42,7 @@ function App() {
 // Auth callback component
 function AuthCallback() {
   const { setToken } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -48,14 +50,17 @@ function AuthCallback() {
 
     if (token) {
       setToken(token);
-      window.location.href = '/dashboard';
+      navigate('/dashboard', { replace: true });
     } else {
-      window.location.href = '/login';
+      navigate('/login', { replace: true });
     }
-  }, [setToken]);
+  }, [setToken, navigate]);
 
   return <div className="flex items-center justify-center min-h-screen">
-    <div className="text-xl">Processing login...</div>
+    <div className="flex flex-col items-center gap-4">
+      <Spinner className="w-8 h-8 text-terra-500" />
+      <p className="text-warm-500 text-sm font-medium">Processing login...</p>
+    </div>
   </div>;
 }
 

@@ -14,7 +14,7 @@ export const config = {
     port: parseInt(process.env.DB_PORT || '5432', 10),
     database: process.env.DB_NAME || 'time_management',
     user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
+    password: process.env.DB_PASSWORD || (process.env.NODE_ENV === 'production' ? (() => { throw new Error('DB_PASSWORD environment variable is required in production'); })() : 'postgres'),
   },
 
   redis: {
@@ -24,7 +24,7 @@ export const config = {
   },
 
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key',
+    secret: process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? (() => { throw new Error('JWT_SECRET environment variable is required in production'); })() : 'dev-only-secret-key'),
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
 
@@ -45,6 +45,8 @@ export const config = {
 
   anthropic: {
     apiKey: process.env.ANTHROPIC_API_KEY || '',
+    model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
+    fastModel: process.env.ANTHROPIC_FAST_MODEL || 'claude-haiku-4-5-20251001',
   },
 
   fcm: {

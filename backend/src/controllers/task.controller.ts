@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -13,7 +13,7 @@ import { taskService } from '../services/task.service';
 import { AppError } from '../middleware/error.middleware';
 
 class TaskController {
-  async getTasks(req: AuthRequest, res: Response) {
+  async getTasks(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { status, quadrant, tags } = req.query;
@@ -30,11 +30,11 @@ class TaskController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getTask(req: AuthRequest, res: Response) {
+  async getTask(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -50,11 +50,11 @@ class TaskController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getMatrix(req: AuthRequest, res: Response) {
+  async getMatrix(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const matrix = await taskService.getEisenhowerMatrix(userId);
@@ -65,11 +65,11 @@ class TaskController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async createTask(req: AuthRequest, res: Response) {
+  async createTask(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const taskData: CreateTaskDTO = req.body;
@@ -83,11 +83,11 @@ class TaskController {
       };
       res.status(201).json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async createTaskFromVoice(req: AuthRequest, res: Response) {
+  async createTaskFromVoice(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const voiceInput: VoiceTaskInput = req.body;
@@ -101,11 +101,11 @@ class TaskController {
       };
       res.status(201).json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async updateTask(req: AuthRequest, res: Response) {
+  async updateTask(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -123,11 +123,11 @@ class TaskController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async deleteTask(req: AuthRequest, res: Response) {
+  async deleteTask(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -143,7 +143,7 @@ class TaskController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

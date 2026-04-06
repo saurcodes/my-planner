@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -9,7 +9,7 @@ import {
 import { planningService } from '../services/planning.service';
 
 class PlanningController {
-  async getQuestions(req: AuthRequest, res: Response) {
+  async getQuestions(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const questions = planningService.getDailyPlanningQuestions();
 
@@ -19,11 +19,11 @@ class PlanningController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async generateDailyPlan(req: AuthRequest, res: Response) {
+  async generateDailyPlan(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const planRequest: DailyPlanRequest = req.body;
@@ -37,11 +37,11 @@ class PlanningController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getCurrentDailyPlan(req: AuthRequest, res: Response) {
+  async getCurrentDailyPlan(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const plan = await planningService.getCurrentDailyPlan(userId);
@@ -52,11 +52,11 @@ class PlanningController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async updateDailyPlan(req: AuthRequest, res: Response) {
+  async updateDailyPlan(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -71,7 +71,7 @@ class PlanningController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

@@ -60,23 +60,23 @@ class FocusService {
        SET status = $1, end_time = CURRENT_TIMESTAMP, productivity_score = $2, notes = $3
        WHERE id = $4 AND user_id = $5
        RETURNING *`,
-      [FocusSessionStatus.COMPLETED, updates.productivityScore || null, updates.notes || null, id, userId]
+      [FocusSessionStatus.COMPLETED, updates.productivityScore !== undefined ? updates.productivityScore : null, updates.notes || null, id, userId]
     );
     return rows.length > 0 ? this.mapRowToSession(rows[0]) : null;
   }
 
   async pauseSession(id: string, userId: string): Promise<FocusSession | null> {
     const rows = await db.query<any>(
-      `UPDATE focus_sessions SET status = $1 WHERE id = $2 AND user_id = $3 RETURNING *`,
-      [FocusSessionStatus.PAUSED, id, userId]
+      `UPDATE focus_sessions SET status = $1 WHERE id = $2 AND user_id = $3 AND status = $4 RETURNING *`,
+      [FocusSessionStatus.PAUSED, id, userId, FocusSessionStatus.ACTIVE]
     );
     return rows.length > 0 ? this.mapRowToSession(rows[0]) : null;
   }
 
   async resumeSession(id: string, userId: string): Promise<FocusSession | null> {
     const rows = await db.query<any>(
-      `UPDATE focus_sessions SET status = $1 WHERE id = $2 AND user_id = $3 RETURNING *`,
-      [FocusSessionStatus.ACTIVE, id, userId]
+      `UPDATE focus_sessions SET status = $1 WHERE id = $2 AND user_id = $3 AND status = $4 RETURNING *`,
+      [FocusSessionStatus.ACTIVE, id, userId, FocusSessionStatus.PAUSED]
     );
     return rows.length > 0 ? this.mapRowToSession(rows[0]) : null;
   }
@@ -89,7 +89,12 @@ class FocusService {
   async updateBlockedSites(userId: string, websites: string[]): Promise<void> {
     await db.query(
       `UPDATE users
-       SET settings = jsonb_set(settings, '{focusMode,blockedWebsites}', $1::jsonb)
+       SET settings = jsonb_set(
+         COALESCE(settings, '{}'::jsonb),
+         '{focusMode,blockedWebsites}',
+         $1::jsonb,
+         true
+       )
        WHERE id = $2`,
       [JSON.stringify(websites), userId]
     );

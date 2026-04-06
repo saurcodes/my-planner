@@ -43,9 +43,10 @@ class ApiClient {
     // Handle errors
     this.client.interceptors.response.use(
       (response) => response,
-      (error) => {
+      async (error) => {
         if (error.response?.status === 401) {
-          localStorage.removeItem('token');
+          const { useAuthStore } = await import('@/store/authStore');
+          useAuthStore.getState().logout();
           window.location.href = '/login';
         }
         return Promise.reject(error);

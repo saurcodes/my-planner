@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -10,7 +10,7 @@ import {
 import { analyticsService } from '../services/analytics.service';
 
 class AnalyticsController {
-  async getProductivityTrends(req: AuthRequest, res: Response) {
+  async getProductivityTrends(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { startDate, endDate, groupBy } = req.query;
@@ -29,11 +29,11 @@ class AnalyticsController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getTimeTracking(req: AuthRequest, res: Response) {
+  async getTimeTracking(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { startDate, endDate } = req.query;
@@ -51,11 +51,11 @@ class AnalyticsController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getAIInsights(req: AuthRequest, res: Response) {
+  async getAIInsights(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const insights = await analyticsService.getAIInsights(userId);
@@ -66,11 +66,11 @@ class AnalyticsController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async generateInsights(req: AuthRequest, res: Response) {
+  async generateInsights(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const insights = await analyticsService.generateAIInsights(userId);
@@ -82,7 +82,7 @@ class AnalyticsController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

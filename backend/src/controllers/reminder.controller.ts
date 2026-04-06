@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -10,7 +10,7 @@ import { reminderService } from '../services/reminder.service';
 import { AppError } from '../middleware/error.middleware';
 
 class ReminderController {
-  async getReminders(req: AuthRequest, res: Response) {
+  async getReminders(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const reminders = await reminderService.getReminders(userId);
@@ -21,11 +21,11 @@ class ReminderController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async getUpcomingReminders(req: AuthRequest, res: Response) {
+  async getUpcomingReminders(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const reminders = await reminderService.getUpcomingReminders(userId);
@@ -36,11 +36,11 @@ class ReminderController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async createReminder(req: AuthRequest, res: Response) {
+  async createReminder(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const reminderData: CreateReminderDTO = req.body;
@@ -54,11 +54,11 @@ class ReminderController {
       };
       res.status(201).json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async updateReminder(req: AuthRequest, res: Response) {
+  async updateReminder(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -76,11 +76,11 @@ class ReminderController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async deleteReminder(req: AuthRequest, res: Response) {
+  async deleteReminder(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -96,7 +96,7 @@ class ReminderController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

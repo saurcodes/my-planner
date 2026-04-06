@@ -6,6 +6,7 @@ interface TaskState {
   tasks: Task[];
   matrix: EisenhowerMatrix | null;
   loading: boolean;
+  creating: boolean;
   fetchTasks: () => Promise<void>;
   fetchMatrix: () => Promise<void>;
   createTask: (task: CreateTaskDTO) => Promise<Task>;
@@ -18,6 +19,7 @@ export const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
   matrix: null,
   loading: false,
+  creating: false,
 
   fetchTasks: async () => {
     set({ loading: true });
@@ -42,19 +44,19 @@ export const useTaskStore = create<TaskState>((set) => ({
   },
 
   createTask: async (taskData: CreateTaskDTO) => {
-    set({ loading: true });
+    set({ creating: true });
     try {
       const newTask = await api.createTask(taskData);
       set((state) => ({
         tasks: [newTask, ...state.tasks],
-        loading: false,
+        creating: false,
       }));
       // Refresh matrix to update quadrants
       const matrix = await api.getMatrix();
       set({ matrix });
       return newTask;
     } catch (error) {
-      set({ loading: false });
+      set({ creating: false });
       throw error;
     }
   },

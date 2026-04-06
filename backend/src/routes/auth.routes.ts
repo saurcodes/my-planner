@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { authController } from '../controllers/auth.controller';
+import { authenticateToken } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -13,10 +14,10 @@ router.get('/apple', passport.authenticate('apple'));
 router.get('/apple/callback', passport.authenticate('apple', { session: false }), authController.oauthCallback);
 
 // Logout
-router.post('/logout', authController.logout);
+router.post('/logout', authenticateToken, authController.logout);
 
 // Get current user
-router.get('/me', authController.getCurrentUser);
+router.get('/me', authenticateToken, authController.getCurrentUser);
 
 // Mobile OAuth - exchange authorization code for token
 router.post('/mobile/google', authController.mobileGoogleAuth);

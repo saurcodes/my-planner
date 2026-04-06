@@ -47,7 +47,7 @@ class TagService {
 
   async deleteTag(id: string, userId: string): Promise<boolean> {
     const result = await db.query(
-      'DELETE FROM tags WHERE id = $1 AND user_id = $2',
+      'DELETE FROM tags WHERE id = $1 AND user_id = $2 RETURNING id',
       [id, userId]
     );
     return result.length > 0;

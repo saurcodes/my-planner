@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import {
   ApiResponse,
@@ -10,7 +10,7 @@ import { tagService } from '../services/tag.service';
 import { AppError } from '../middleware/error.middleware';
 
 class TagController {
-  async getTags(req: AuthRequest, res: Response) {
+  async getTags(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const tags = await tagService.getTags(userId);
@@ -21,11 +21,11 @@ class TagController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async createTag(req: AuthRequest, res: Response) {
+  async createTag(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const tagData: CreateTagDTO = req.body;
@@ -39,11 +39,11 @@ class TagController {
       };
       res.status(201).json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async updateTag(req: AuthRequest, res: Response) {
+  async updateTag(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -61,11 +61,11 @@ class TagController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  async deleteTag(req: AuthRequest, res: Response) {
+  async deleteTag(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const userId = req.userId!;
       const { id } = req.params;
@@ -81,7 +81,7 @@ class TagController {
       };
       res.json(response);
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 }

@@ -1,21 +1,22 @@
-export const formatTime = (date: Date): string => {
-  return date.toTimeString().slice(0, 5); // HH:mm
+export const formatTime = (date: Date | string): string => {
+  return new Date(date).toTimeString().slice(0, 5); // HH:mm
 };
 
-export const isToday = (date: Date): boolean => {
+export const isToday = (date: Date | string): boolean => {
+  const d = new Date(date);
   const today = new Date();
   return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
+    d.getDate() === today.getDate() &&
+    d.getMonth() === today.getMonth() &&
+    d.getFullYear() === today.getFullYear()
   );
 };
 
-export const isOverdue = (deadline: Date): boolean => {
-  return new Date() > deadline;
+export const isOverdue = (deadline: Date | string): boolean => {
+  return new Date() > new Date(deadline);
 };
 
-export const getDaysUntil = (date: Date): number => {
+export const getDaysUntil = (date: Date | string): number => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const target = new Date(date);

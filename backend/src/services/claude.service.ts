@@ -28,7 +28,7 @@ class ClaudeService {
       const prompt = this.buildDailyPlanPrompt(planRequest, userTasks);
 
       const message = await this.client.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: config.anthropic.model,
         max_tokens: 4096,
         messages: [
           {
@@ -68,7 +68,7 @@ Extract and return a JSON object with the following fields:
 Return ONLY the JSON object, no additional text.`;
 
       const message = await this.client.messages.create({
-        model: 'claude-3-5-haiku-20241022',
+        model: config.anthropic.fastModel,
         max_tokens: 1024,
         messages: [
           {
@@ -116,7 +116,7 @@ For each insight, provide:
 Return as JSON array.`;
 
       const message = await this.client.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: config.anthropic.model,
         max_tokens: 2048,
         messages: [
           {

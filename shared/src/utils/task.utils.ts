@@ -25,7 +25,7 @@ export const calculateQuadrant = (urgency: number, importance: number): TaskQuad
 /**
  * Calculate task priority based on quadrant and deadline
  */
-export const calculatePriority = (task: Task): TaskPriority => {
+export const calculatePriority = (task: Pick<Task, 'quadrant' | 'deadline'>): TaskPriority => {
   if (task.quadrant === TaskQuadrant.URGENT_IMPORTANT) {
     return TaskPriority.URGENT;
   }
@@ -53,7 +53,7 @@ export const calculatePriority = (task: Task): TaskPriority => {
 /**
  * Auto-calculate urgency based on deadline proximity
  */
-export const calculateUrgencyFromDeadline = (deadline?: Date): number => {
+export const calculateUrgencyFromDeadline = (deadline?: Date | string): number => {
   if (!deadline) {
     return 3; // Default low urgency if no deadline
   }
@@ -99,7 +99,7 @@ export const sortTasks = (tasks: Task[]): Task[] => {
 
     // Then by deadline (earlier first)
     if (a.deadline && b.deadline) {
-      return a.deadline.getTime() - b.deadline.getTime();
+      return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
     } else if (a.deadline) {
       return -1;
     } else if (b.deadline) {
@@ -107,6 +107,6 @@ export const sortTasks = (tasks: Task[]): Task[] => {
     }
 
     // Finally by creation date (newer first)
-    return b.createdAt.getTime() - a.createdAt.getTime();
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 };
