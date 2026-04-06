@@ -45,8 +45,8 @@ class FocusService {
 
     return {
       session,
-      blockedWebsites: user.settings.focusMode.blockedWebsites,
-      pomodoroSettings: user.settings.pomodoroSettings,
+      blockedWebsites: user.settings?.focusMode?.blockedWebsites ?? [],
+      pomodoroSettings: user.settings?.pomodoroSettings ?? null,
     };
   }
 
@@ -83,7 +83,7 @@ class FocusService {
 
   async getBlockedSites(userId: string): Promise<string[]> {
     const user = await authService.getUserById(userId);
-    return user.settings.focusMode.blockedWebsites;
+    return user.settings?.focusMode?.blockedWebsites ?? [];
   }
 
   async updateBlockedSites(userId: string, websites: string[]): Promise<void> {

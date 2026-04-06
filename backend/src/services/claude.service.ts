@@ -79,7 +79,10 @@ Return ONLY the JSON object, no additional text.`;
       });
 
       const responseText = message.content[0].type === 'text' ? message.content[0].text : '{}';
-      const taskData = JSON.parse(responseText);
+      const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+                       responseText.match(/```\n([\s\S]*?)\n```/) ||
+                       [null, responseText];
+      const taskData = JSON.parse(jsonMatch[1] || responseText);
 
       return taskData;
     } catch (error) {
@@ -124,7 +127,10 @@ Return as JSON array.`;
       });
 
       const responseText = message.content[0].type === 'text' ? message.content[0].text : '[]';
-      const insights = JSON.parse(responseText);
+      const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+                       responseText.match(/```\n([\s\S]*?)\n```/) ||
+                       [null, responseText];
+      const insights = JSON.parse(jsonMatch[1] || responseText);
 
       return insights;
     } catch (error) {

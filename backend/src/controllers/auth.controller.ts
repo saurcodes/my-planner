@@ -89,7 +89,7 @@ class AuthController {
       // Transform Google user data to match our OAuth user format
       const oauthUser = {
         provider: 'google',
-        providerId: googleUser.id,
+        id: googleUser.id,
         email: googleUser.email,
         name: googleUser.name,
       };
