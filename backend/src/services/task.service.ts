@@ -191,7 +191,7 @@ class TaskService {
 
   async deleteTask(id: string, userId: string): Promise<boolean> {
     const result = await db.query(
-      'DELETE FROM tasks WHERE id = $1 AND user_id = $2',
+      'DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING id',
       [id, userId]
     );
     return result.length > 0;
